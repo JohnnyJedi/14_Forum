@@ -105,7 +105,6 @@ public class ForumImpl implements Forum {
 
         Post pattern2 = new Post("", author,Integer.MAX_VALUE, "");
         pattern2.setDate(LocalDateTime.of(dateTo, LocalTime.MAX));
-//        pattern2.setDate(dateTo.atTime(23, 59, 59));
         int indexEnd = -Arrays.binarySearch(posts, 0, size, pattern2, comparator)-1;
 
         return Arrays.copyOfRange(posts, indexStart, indexEnd);

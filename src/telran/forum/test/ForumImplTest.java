@@ -7,6 +7,7 @@ import telran.forum.model.Post;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
@@ -35,6 +36,11 @@ class ForumImplTest {
         posts[12] = new Post("Spring is the best framework", "Jack", 13, "Don't need to choose");
         posts[13] = new Post("Create  Read Update Delete ", "David", 12, "Java Concept");
         forum = new ForumImpl();
+        int days = posts.length;
+        for (int i = posts.length - 1; i >= 0; i--) {
+            posts[i].setDate((LocalDateTime.of(LocalDate.now().minusDays(days), LocalTime.now())));
+             days--;
+        }
         for (int i = 0; i < posts.length; i++) {
             forum.addPost(posts[i]);
         }
@@ -87,8 +93,9 @@ class ForumImplTest {
 
     @Test
     void testGetPostsByAuthor2() {
-        posts[2].setDate(LocalDateTime.of(2024, 2, 8, 13, 30));
-        Post[] actual = forum.getPostsByAuthor("Jack", LocalDate.of(2025, 2, 10), LocalDate.now());
+//        posts[2].setDate(LocalDateTime.of(2024, 2, 8, 13, 30)); // нет смысла менять тут дату
+//        , так как массив уже задан и отсортирован,позиция без доп.сортировки не изменится!
+        Post[] actual = forum.getPostsByAuthor("Jack", LocalDate.now().minusDays(15), LocalDate.now().minusDays(10));
         Post[] expected = new Post[]{posts[11], posts[12]};
         Arrays.sort(actual);
         Arrays.sort(expected);
@@ -96,7 +103,6 @@ class ForumImplTest {
         for (int i = 0; i < actual.length; i++) {
             System.out.println(actual[i]);
         }
-
         assertArrayEquals(expected, actual);
     }
 
